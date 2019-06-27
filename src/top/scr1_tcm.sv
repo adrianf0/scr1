@@ -19,7 +19,6 @@ module scr1_tcm
     // Core instruction interface
     output  logic                           imem_req_ack,
     input   logic                           imem_req,
-    input   type_scr1_mem_cmd_e             imem_cmd,
     input   logic [`SCR1_IMEM_AWIDTH-1:0]   imem_addr,
     output  logic [`SCR1_IMEM_DWIDTH-1:0]   imem_rdata,
     output  type_scr1_mem_resp_e            imem_resp,
@@ -74,8 +73,8 @@ assign dmem_req_ack = 1'b1;
 //-------------------------------------------------------------------------------
 // Memory data composing
 //-------------------------------------------------------------------------------
-assign imem_rd  = 1'b1;
-assign dmem_rd  = 1'b1;
+assign imem_rd  = imem_req;
+assign dmem_rd  = dmem_req & (dmem_cmd == SCR1_MEM_CMD_RD);
 assign dmem_wr  = dmem_req & (dmem_cmd == SCR1_MEM_CMD_WR);
 
 always_comb begin
